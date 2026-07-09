@@ -6,36 +6,81 @@
     <title>dashboard</title>
 </head>
 <body> 
-    <header>
-            <h2>INTERNSHIP MANAGEMENT PORTAL </h2>
-    </header>
-    <hr>
-     <main>
-    <section>
-        <h3>WELCOME ! THIS IS A INTERNSHIP APPLICATION!</h3>
-    </section>
- </main>
- <hr>
+     
+<header>
+    <h1>Internship Management Portal</h1>
 
-<nav>
-<a href="../dashboard/index.html">Dashboard</a>
+    <nav>
+        <a href="../dashboard/index.html">Dashboard</a> <br>
+        <a href="../students/registration.html">Student Registration</a> <br>
+        <a href="../students/studentlist.html">Student List</a> <br>
+        <a href="../reports/attendance.html">Attendance Report</a> <br>
+        <a href="../reports/tasksubmission.html">Task Submission</a> <br>
+        <a href="../reports/performance.html">Performance Report</a> <br>
+        <a href="../forms/contactus.html">Contact Us</a><br>
+    </nav>
+
+    <hr>
+</header>
+
+<main>
+<section>
+<h2>Dashboard Summary</h2>
+<table border="2" cellpadding="15">
+<tr>
+<th>Category</th>
+<th>Count</th>
+</tr>
+
+<tr>
+<td>Total Students</td>
+<td>150</td>
+</tr>
+
+<tr>
+<td>Active Students</td>
+<td>135</td>
+</tr>
+
+<tr>
+<td>Pending Assignments</td>
+<td>18</td>
+</tr>
+
+<tr>
+<td>Submitted Assignments</td>
+<td>132</td>
+</tr>
+</table>
+</section>
+
 <br>
-<a href="../students/registration.html">Student Registration</a>
-<br>
-<a href="../students/studentlist.html">Student List</a>
-<br>
-<a href="../reports/attendance.html">Attendance Report</a>
-<br>
-<a href="../forms/tasksubmission.html">Task Submission</a>
-<br>
-<a href="../reports/performance.html">Performance Report</a>
-<br>
-<a href="../forms/contactus.html">Contact Us</a>
-</nav>
+
+<section>
+<h2>Weekly Performance</h2>
+
+<label>HTML Progress</label><br>
+<progress value="80" max="100"></progress>
+
+<br><br>
+<label>Git Progress</label><br>
+<progress value="70" max="100"></progress>
+
+<br><br>
+<label>Attendance</label><br>
+<meter value="92" min="0" max="100"></meter>
+
+<br><br>
+<label>Assignment Completion</label><br>
+<meter value="88" min="0" max="100"></meter>
+</section>
+</main>
+
 <footer>
-    <pre>
-                    internship management portal
-                              developed by ANUSKA YADAV
+    <br>
+    <hr>
+                    <p>Management portal</p>
+                              <p>Developed by ANUSKA YADAV</p>
     </pre>
 </footer>
 </body>
