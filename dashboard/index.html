@@ -3,230 +3,182 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>dashboard</title>
-
+    <title>Internship Management Portal</title>
+    <link rel="stylesheet" href="css/style.css">
 </head>
-<body> 
-     
-<header>
+<body>
 
-    <h1>Internship Management portal for student</h1>
+    <!-- Loading Spinner -->
+    <div id="loading" class="loading">
+        <div class="spinner"></div>
+        <p>Loading...</p>
+    </div>
 
+    <header>
+        <h1>Internship Management Portal</h1>
+    </header>
 
-    <nav>
-        <a href="../dashboard/index.html">Dashboard</a> <br>
-        <a href="../students/registration.html">Student Registration</a> <br>
-        <a href="../students/studentlist.html">Student List</a> <br>
-        <a href="../reports/attendance.html">Attendance Report</a> <br>
-        <a href="../reports/tasksubmission.html">Task Submission</a> <br>
-        <a href="../reports/performance.html">Performance Report</a> <br>
-        <a href="../forms/contactus.html">Contact Us</a><br>
-    </nav>
+    <!-- Dashboard -->
+    <section class="dashboard">
+        <div class="card">
+            <h3>Total Students</h3>
+            <p id="totalStudents">0</p>
+        </div>
 
-    <hr>
-</header>
+        <div class="card">
+            <h3>Active Students</h3>
+            <p id="activeStudents">0</p>
+        </div>
 
-<main>
-<section>
-<h2>Dashboard Summary</h2>
-<table border="2" cellpadding="15">
-<tr>
-<th>Category</th>
-<th>Count</th>
-</tr>
+        <div class="card">
+            <h3>Inactive Students</h3>
+            <p id="inactiveStudents">0</p>
+        </div>
 
-<tr>
-<td>Total Students</td>
-<td>150</td>
-</tr>
+        <div class="card">
+            <h3>Average Attendance</h3>
+            <p id="avgAttendance">0%</p>
+        </div>
+    </section>
 
-<tr>
-<td>Active Students</td>
-<td>135</td>
-</tr>
+    <!-- Student Form -->
+    <section class="form-section">
 
-<tr>
-<td>Pending Assignments</td>
-<td>18</td>
-</tr>
+        <h2>Add Student</h2>
 
-<tr>
-<td>Submitted Assignments</td>
-<td>132</td>
-</tr>
-</table>
-</section>
+        <form id="studentForm">
 
-<br>
+            <input
+                type="hidden"
+                id="studentIndex"
+            >
 
-<section>
-<h2>Weekly Performance</h2>
+            <input
+                type="text"
+                id="name"
+                placeholder="Student Name"
+                required
+            >
 
-<label>HTML Progress</label><br>
-<progress value="80" max="100"></progress>
+            <input
+                type="email"
+                id="email"
+                placeholder="Email"
+                required
+            >
 
-<br><br>
-<label>Git Progress</label><br>
-<progress value="70" max="100"></progress>
+            <input
+                type="number"
+                id="attendance"
+                placeholder="Attendance (%)"
+                min="0"
+                max="100"
+                required
+            >
 
-<br><br>
-<label>Attendance</label><br>
-<meter value="92" min="0" max="100"></meter>
+            <input
+                type="number"
+                id="performance"
+                placeholder="Performance (%)"
+                min="0"
+                max="100"
+                required
+            >
 
-<br><br>
-<label>Assignment Completion</label><br>
-<meter value="88" min="0" max="100"></meter>
-</section>
-</main>
+            <select id="status">
+                <option value="Active">Active</option>
+                <option value="Inactive">Inactive</option>
+            </select>
 
-<section>
+            <button type="submit">
+                Save Student
+            </button>
 
-<h2>Internship Information</h2>
+        </form>
 
-<article>
-<h3>About Internship</h3>
+    </section>
 
-<p>
-This internship management portal is created by anuska using html only. 
-It helps students register, check attendance, submit tasks and view their performance.
-</p>
-</article>
-
-<aside>
-<h3>Important Notice</h3>
-
-<p>Submit all assignments before the deadline</p>
-</aside>
-
-<details>
-    <summary>Click to Read Instructions</summary>
-
-<p>Complete your assignments on time and maintain good attendance </p>
-</details>
-
-<h3>Course Progress</h3>
-
-<p>HTML Progress</p>
-<progress value="75" max="100"></progress>
-
-<p>Attendance</p>
-<meter value="90" min="0" max="100"></meter>
-
-<h3>Internship Image</h3>
-
-<figure>
-    <img src="https://via.placeholder.com/300x180" alt="Internship Image">
-
-    <figcaption>Internship Management Portal</figcaption>
-</figure>
-
-<h3>Office Location</h3>
-
-<iframe
-src="https://www.google.com/maps?q=Delhi&output=embed"
-width="400"
-height="250">
-</iframe>
-
-<h3>Welcome Audio</h3>
-
-<audio controls>
-    <source src="../media/welcome.mp3" type="audio/mpeg">
-    Your browser does not support audio.
-</audio>
-
-<h3>Introduction Video</h3>
-
-<video width="400" controls>
-    <source src="../media/intro.mp4" type="video/mp4">
-    Your browser does not support video.
-</video>
-
-</section>
-
-<footer>
-    <br>
-    <hr>
-    <p>Management portal</p>
-    <p>Developed by : ANUSKA YADAV</p>
-    </pre>
-</footer>
-<section class="student-form">
-    <h2>Add Student</h2>
-
-    <form id="studentForm">
+    <!-- Search Filter Sort -->
+    <section class="controls">
 
         <input
             type="text"
-            id="name"
-            placeholder="Student Name"
-            required
+            id="search"
+            placeholder="Search Student..."
         >
 
-        <input
-            type="email"
-            id="email"
-            placeholder="Email"
-            required
-        >
-
-        <input
-            type="number"
-            id="attendance"
-            placeholder="Attendance %"
-            min="0"
-            max="100"
-            required
-        >
-
-        <input
-            type="number"
-            id="performance"
-            placeholder="Performance Score"
-            min="0"
-            max="100"
-            required
-        >
-
-        <select id="status">
+        <select id="filterStatus">
+            <option value="All">All Students</option>
             <option value="Active">Active</option>
             <option value="Inactive">Inactive</option>
         </select>
 
-        <button type="submit">
-            Save Student
+        <select id="sortBy">
+            <option value="">Sort By</option>
+            <option value="name">Name</option>
+            <option value="attendance">Attendance</option>
+            <option value="performance">Performance</option>
+        </select>
+
+        <button id="exportBtn">
+            Export JSON
         </button>
 
-    </form>
-</section>
-<section class="student-list">
+        <input
+            type="file"
+            id="importFile"
+            accept=".json"
+        >
 
-    <h2>Students</h2>
+    </section>
 
-    <table>
+    <!-- Students Table -->
+    <section class="table-section">
 
-        <thead>
-            <tr>
-                <th>Name</th>
-                <th>Email</th>
-                <th>Attendance</th>
-                <th>Performance</th>
-                <th>Status</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
+        <table>
 
-        <tbody id="studentTableBody">
+            <thead>
 
-        </tbody>
+                <tr>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Attendance</th>
+                    <th>Performance</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
 
-    </table>
+            </thead>
 
-</section>
-<script src="script.js"></script>
-<script src="js/students.js"></script>
-<script src="js/dashboard.js"></script>
-<script src="js/validation.js"></script>
-<script src="js/app.js"></script>
+            <tbody id="studentTable">
+
+            </tbody>
+
+        </table>
+
+    </section>
+
+    <!-- Analytics -->
+    <section class="analytics">
+
+        <h2>Dashboard Analytics</h2>
+
+        <div class="card">
+            <p>Top Performer</p>
+            <h3 id="topPerformer">-</h3>
+        </div>
+
+        <div class="card">
+            <p>Highest Attendance</p>
+            <h3 id="highestAttendance">-</h3>
+        </div>
+
+    </section>
+
+    <script src="js/validation.js"></script>
+    <script src="js/dashboard.js"></script>
+    <script src="js/students.js"></script>
+    <script src="js/app.js"></script>
+
 </body>
 </html>
