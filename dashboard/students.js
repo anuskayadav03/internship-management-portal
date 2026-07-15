@@ -65,3 +65,36 @@ function editStudent(index) {
     document.getElementById("status").value = student.status;
 
 }
+// Update Student
+
+function updateStudent(index, student) {
+
+    students[index] = student;
+
+    saveStudents();
+
+    displayStudents();
+
+}
+
+// Delete Student
+
+function deleteStudent(index) {
+
+    const confirmDelete = confirm("Are you sure you want to delete this student?");
+
+    if (!confirmDelete) {
+        return;
+    }
+
+    students.splice(index, 1);
+
+    saveStudents();
+
+    displayStudents();
+
+}
+
+// Show data on page load
+
+displayStudents();
