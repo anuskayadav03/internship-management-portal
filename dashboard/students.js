@@ -39,3 +39,29 @@ function displayStudents(studentList = students) {
 
     updateDashboard();
 }
+// Add Student
+
+function addStudent(student) {
+
+    students.push(student);
+
+    saveStudents();
+
+    displayStudents();
+
+}
+
+// Edit Student
+
+function editStudent(index) {
+
+    const student = students[index];
+
+    document.getElementById("studentIndex").value = index;
+    document.getElementById("name").value = student.name;
+    document.getElementById("email").value = student.email;
+    document.getElementById("attendance").value = student.attendance;
+    document.getElementById("performance").value = student.performance;
+    document.getElementById("status").value = student.status;
+
+}
