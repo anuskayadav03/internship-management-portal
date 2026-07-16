@@ -1,82 +1,31 @@
-// Update Dashboard Statistics
+// Get Elements
+const loading = document.getElementById("loading");
+const dashboardCards = document.getElementById("dashboardCards");
+const error = document.getElementById("error");
 
-function updateDashboard() {
+async function loadDashboard() {
+    try {
+        // Fetch data from APIs
+        const users = await fetchUsers();
+        const reports = await fetchReports();
 
-    const totalStudents = students.length;
+        // Dashboard Statistics
+        document.getElementById("studentCount").textContent = users.length;
+        document.getElementById("reportCount").textContent = reports.length;
+        document.getElementById("activeCount").textContent = users.length;
+        document.getElementById("pendingCount").textContent = Math.floor(reports.length / 2);
 
-    const activeStudents = students.filter(student =>
-        student.status === "Active"
-    ).length;
+        // Hide loading and show dashboard
+        loading.classList.add("d-none");
+        dashboardCards.classList.remove("d-none");
 
-    const inactiveStudents = students.filter(student =>
-        student.status === "Inactive"
-    ).length;
+    } catch (err) {
+        console.error(err);
 
-    let totalAttendance = 0;
-
-    students.forEach(student => {
-        totalAttendance += Number(student.attendance);
-    });
-
-    const averageAttendance =
-        totalStudents > 0
-            ? (totalAttendance / totalStudents).toFixed(1)
-            : 0;
-
-    document.getElementById("totalStudents").textContent = totalStudents;
-
-    document.getElementById("activeStudents").textContent = activeStudents;
-
-    document.getElementById("inactiveStudents").textContent = inactiveStudents;
-
-    document.getElementById("avgAttendance").textContent =
-        averageAttendance + "%";
-
-    updateAnalytics();
-}
-
-// Dashboard Analytics
-
-function updateAnalytics() {
-
-    if (students.length === 0) {
-
-        document.getElementById("topPerformer").textContent = "-";
-
-        document.getElementById("highestAttendance").textContent = "-";
-
-        return;
+        loading.classList.add("d-none");
+        error.classList.remove("d-none");
     }
-
-    let topPerformer = students[0];
-
-    let highestAttendance = students[0];
-
-    students.forEach(student => {
-
-        if (
-            Number(student.performance) >
-            Number(topPerformer.performance)
-        ) {
-            topPerformer = student;
-        }
-
-        if (
-            Number(student.attendance) >
-            Number(highestAttendance.attendance)
-        ) {
-            highestAttendance = student;
-        }
-
-    });
-
-    document.getElementById("topPerformer").textContent =
-        `${topPerformer.name} (${topPerformer.performance}%)`;
-
-    document.getElementById("highestAttendance").textContent =
-        `${highestAttendance.name} (${highestAttendance.attendance}%)`;
 }
 
-// Show dashboard when page loads
-
-updateDashboard();
+// Load Dashboard when page opens
+loadDashboard();
