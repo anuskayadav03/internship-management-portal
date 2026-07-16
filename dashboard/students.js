@@ -1,100 +1,114 @@
-// Student Data
+let students = [];
+let filteredStudents = [];
+let currentPage = 1;
+const studentsPerPage = 10;
 
-let students = JSON.parse(localStorage.getItem("students")) || [];
+// HTML Elements
+const studentContainer = document.getElementById("studentContainer");
+const searchInput = document.getElementById("searchInput");
+const filterCompany = document.getElementById("filterCompany");
+const loading = document.getElementById("loading");
+const pageNumber = document.getElementById("pageNumber");
 
-// Save Data
+// Load Students
+async function loadStudents() {
+    try {
+        students = await fetchUsers();
+        filteredStudents = students;
 
-function saveStudents() {
-    localStorage.setItem("students", JSON.stringify(students));
+        populateCompanies();
+        displayStudents();
+    } catch (error) {
+        studentContainer.innerHTML =
+            "<h3 class='text-danger text-center'>Failed to load students.</h3>";
+    } finally {
+        loading.style.display = "none";
+    }
 }
 
 // Display Students
+function displayStudents() {
+    studentContainer.innerHTML = "";
 
-function displayStudents(studentList = students) {
+    const start = (currentPage - 1) * studentsPerPage;
+    const end = start + studentsPerPage;
 
-    const table = document.getElementById("studentTable");
-    table.innerHTML = "";
+    const pageStudents = filteredStudents.slice(start, end);
 
-    studentList.forEach((student, index) => {
-
-        table.innerHTML += `
-            <tr>
-                <td>${student.name}</td>
-                <td>${student.email}</td>
-                <td>${student.attendance}%</td>
-                <td>${student.performance}%</td>
-                <td>${student.status}</td>
-                <td>
-                    <button class="edit-btn" onclick="editStudent(${index})">
-                        Edit
-                    </button>
-
-                    <button class="delete-btn" onclick="deleteStudent(${index})">
-                        Delete
-                    </button>
-                </td>
-            </tr>
+    pageStudents.forEach(student => {
+        studentContainer.innerHTML += `
+        <div class="col-md-4">
+            <div class="card shadow h-100 student-card">
+                <div class="card-body text-center">
+                    <img src="${student.image}" class="img-fluid rounded-circle mb-3" width="120">
+                    <h5>${student.firstName} ${student.lastName}</h5>
+                    <p>${student.email}</p>
+                    <p>${student.phone}</p>
+                    <p><strong>${student.company.name}</strong></p>
+                </div>
+            </div>
+        </div>
         `;
     });
 
-    updateDashboard();
+    pageNumber.textContent = currentPage;
 }
-// Add Student
 
-function addStudent(student) {
+// Company Filter
+function populateCompanies() {
+    const companies = [...new Set(students.map(student => student.company.name))];
 
-    students.push(student);
+    companies.forEach(company => {
+        filterCompany.innerHTML += `
+            <option value="${company}">${company}</option>
+        `;
+    });
+}
 
-    saveStudents();
+// Search
+searchInput.addEventListener("input", () => {
+    const keyword = searchInput.value.toLowerCase();
 
+    filteredStudents = students.filter(student =>
+        (`${student.firstName} ${student.lastName}`)
+        .toLowerCase()
+        .includes(keyword)
+    );
+
+    currentPage = 1;
     displayStudents();
+});
 
-}
+// Filter
+filterCompany.addEventListener("change", () => {
+    const company = filterCompany.value;
 
-// Edit Student
-
-function editStudent(index) {
-
-    const student = students[index];
-
-    document.getElementById("studentIndex").value = index;
-    document.getElementById("name").value = student.name;
-    document.getElementById("email").value = student.email;
-    document.getElementById("attendance").value = student.attendance;
-    document.getElementById("performance").value = student.performance;
-    document.getElementById("status").value = student.status;
-
-}
-// Update Student
-
-function updateStudent(index, student) {
-
-    students[index] = student;
-
-    saveStudents();
-
-    displayStudents();
-
-}
-
-// Delete Student
-
-function deleteStudent(index) {
-
-    const confirmDelete = confirm("Are you sure you want to delete this student?");
-
-    if (!confirmDelete) {
-        return;
+    if (company === "") {
+        filteredStudents = students;
+    } else {
+        filteredStudents = students.filter(student =>
+            student.company.name === company
+        );
     }
 
-    students.splice(index, 1);
-
-    saveStudents();
-
+    currentPage = 1;
     displayStudents();
+});
 
-}
+// Pagination
+document.getElementById("nextBtn").addEventListener("click", () => {
+    if ((currentPage * studentsPerPage) < filteredStudents.length) {
+        currentPage++;
+        displayStudents();
+    }
+});
 
-// Show data on page load
+document.getElementById("prevBtn").addEventListener("click", () => {
+    if (currentPage > 1) {
+        currentPage--;
+        displayStudents();
+    }
+});
 
-displayStudents();
+// Start
+loadStudents();
