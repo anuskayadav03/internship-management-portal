@@ -1,12 +1,7 @@
 # Internship Management Portal
 
 ## Project Overview
-
 The Internship Management Portal is a simple multi-page HTML project created as part of the internship assignment. It helps manage student registration, attendance, task submission, performance reports, and contact information.
-
----
-
----
 
 ## Technologies Used
 
@@ -15,7 +10,6 @@ The Internship Management Portal is a simple multi-page HTML project created as 
 - GitHub
 - GitHub Pages
 
----
 
 ## Git Commands Used
 
