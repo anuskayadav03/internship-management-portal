@@ -1,4 +1,4 @@
-// Login Protection
+// Login Check
 const user = JSON.parse(localStorage.getItem("user"));
 
 if (!user || !user.isLoggedIn) {
@@ -8,7 +8,6 @@ if (!user || !user.isLoggedIn) {
 const loading = document.getElementById("loading");
 const profileCard = document.getElementById("profileCard");
 
-// Load Profile
 function loadProfile() {
 
     loading.classList.remove("d-none");
@@ -19,54 +18,30 @@ function loadProfile() {
 
         profileCard.classList.remove("d-none");
 
-        profileCard.innerHTML = `
+        document.getElementById("profileImage").src =
+            "https://ui-avatars.com/api/?name=" +
+            encodeURIComponent(user.email);
 
-        <div class="col-md-6">
+        document.getElementById("profileName").innerHTML =
+            user.email.split("@")[0];
 
-            <div class="card shadow">
+        document.getElementById("profileEmail").innerHTML =
+            "Email : " + user.email;
 
-                <div class="card-body text-center">
+        document.getElementById("profileRole").innerHTML =
+            "Role : " + user.role.toUpperCase();
 
-                    <img
-                        src="https://ui-avatars.com/api/?name=${encodeURIComponent(user.email)}&size=150"
-                        class="rounded-circle mb-3">
-
-                    <h3>User Profile</h3>
-
-                    <hr>
-
-                    <p><strong>Email:</strong> ${user.email}</p>
-
-                    <p><strong>Role:</strong> ${user.role.toUpperCase()}</p>
-
-                    <button
-                        class="btn btn-primary"
-                        onclick="editProfile()">
-
-                        Edit Profile
-
-                    </button>
-
-                </div>
-
-            </div>
-
-        </div>
-
-        `;
-
-    },1000);
+    }, 800);
 
 }
 
 loadProfile();
 
-// Edit Profile
-function editProfile(){
+function editProfile() {
 
-    const newEmail = prompt("Enter New Email", user.email);
+    const newEmail = prompt("Enter new email", user.email);
 
-    if(newEmail && newEmail.trim() !== ""){
+    if (newEmail && newEmail.trim() !== "") {
 
         user.email = newEmail.trim();
 
@@ -80,8 +55,7 @@ function editProfile(){
 
 }
 
-// Logout
-function logout(){
+function logout() {
 
     localStorage.removeItem("user");
 

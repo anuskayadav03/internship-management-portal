@@ -1,19 +1,16 @@
-// Login Protection
 const user = JSON.parse(localStorage.getItem("user"));
 
 if (!user || !user.isLoggedIn) {
     window.location.href = "login.html";
 }
 
-const loading = document.getElementById("loading");
-const reportTable = document.getElementById("reportTable");
-const searchInput = document.getElementById("searchReport");
-
 let reports = [];
 let currentPage = 1;
-const reportsPerPage = 10;
+const perPage = 10;
 
-// Load Reports
+const table = document.getElementById("reportTable");
+const loading = document.getElementById("loading");
+
 async function loadReports() {
 
     loading.style.display = "block";
@@ -28,43 +25,44 @@ async function loadReports() {
 
 loadReports();
 
-// Render Reports
 function renderReports() {
 
-    reportTable.innerHTML = "";
+    table.innerHTML = "";
 
-    let keyword = searchInput.value.toLowerCase();
+    const keyword = document.getElementById("searchReport").value.toLowerCase();
 
-    let filtered = reports.filter(report =>
-        report.title.toLowerCase().includes(keyword) ||
-        report.body.toLowerCase().includes(keyword)
+    const filtered = reports.filter(report =>
+        report.title.toLowerCase().includes(keyword)
     );
 
-    let start = (currentPage - 1) * reportsPerPage;
-    let end = start + reportsPerPage;
+    const start = (currentPage - 1) * perPage;
+
+    const end = start + perPage;
 
     filtered.slice(start, end).forEach(report => {
 
-        reportTable.innerHTML += `
+        table.innerHTML += `
+
         <tr>
 
-            <td>${report.id}</td>
+        <td>${report.id}</td>
 
-            <td>${report.title}</td>
+        <td>${report.title}</td>
 
-            <td>${report.body.substring(0,50)}...</td>
+        <td>${report.body.substring(0,50)}...</td>
 
-            <td>
+        <td>
 
-                <span class="badge bg-success">
+        <span class="badge bg-success">
 
-                    Completed
+        Completed
 
-                </span>
+        </span>
 
-            </td>
+        </td>
 
         </tr>
+
         `;
 
     });
@@ -73,8 +71,7 @@ function renderReports() {
 
 }
 
-// Search
-searchInput.addEventListener("keyup", () => {
+document.getElementById("searchReport").addEventListener("keyup", () => {
 
     currentPage = 1;
 
@@ -82,7 +79,6 @@ searchInput.addEventListener("keyup", () => {
 
 });
 
-// Pagination
 document.getElementById("prevBtn").addEventListener("click", () => {
 
     if (currentPage > 1) {
@@ -97,24 +93,12 @@ document.getElementById("prevBtn").addEventListener("click", () => {
 
 document.getElementById("nextBtn").addEventListener("click", () => {
 
-    let keyword = searchInput.value.toLowerCase();
+    currentPage++;
 
-    let filtered = reports.filter(report =>
-        report.title.toLowerCase().includes(keyword) ||
-        report.body.toLowerCase().includes(keyword)
-    );
-
-    if (currentPage < Math.ceil(filtered.length / reportsPerPage)) {
-
-        currentPage++;
-
-        renderReports();
-
-    }
+    renderReports();
 
 });
 
-// Logout
 function logout() {
 
     localStorage.removeItem("user");

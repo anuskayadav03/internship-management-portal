@@ -1,74 +1,117 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Reports</title>
 
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="css/style.css">
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Reports</title>
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+<link rel="stylesheet" href="../style.css">
+
 </head>
+
 <body>
 
-<!-- Navbar -->
-<nav class="navbar navbar-dark bg-primary">
-    <div class="container">
-        <a class="navbar-brand fw-bold" href="index.html">
-            Internship Portal
-        </a>
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
 
-        <div>
-            <a href="index.html" class="btn btn-light btn-sm">Dashboard</a>
-            <a href="students.html" class="btn btn-light btn-sm">Students</a>
-            <a href="reports.html" class="btn btn-light btn-sm">Reports</a>
-            <a href="profile.html" class="btn btn-light btn-sm">Profile</a>
-        </div>
-    </div>
+<div class="container">
+
+<a class="navbar-brand" href="index.html">
+Internship Portal
+</a>
+
+<div>
+
+<a href="index.html" class="btn btn-light btn-sm">Dashboard</a>
+
+<a href="students.html" class="btn btn-light btn-sm">Students</a>
+
+<button class="btn btn-danger btn-sm" onclick="logout()">
+Logout
+</button>
+
+</div>
+
+</div>
+
 </nav>
 
 <div class="container mt-4">
 
-    <h2 class="text-center mb-4">Reports</h2>
+<h2 class="mb-4">
+Reports
+</h2>
 
-    <!-- Search -->
-    <input
-        type="search"
-        id="searchReport"
-        class="form-control mb-3"
-        placeholder="Search reports..."
-    >
+<input
+type="text"
+id="searchReport"
+class="form-control mb-3"
+placeholder="Search Report">
 
-    <!-- Loading -->
-    <div id="loading" class="text-center">
-        <div class="spinner-border text-primary"></div>
-        <p>Loading Reports...</p>
-    </div>
+<div id="loading" class="text-center">
 
-    <!-- Table -->
-    <table class="table table-bordered table-hover">
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Title</th>
-                <th>Description</th>
-                <th>Status</th>
-            </tr>
-        </thead>
+<div class="spinner-border text-primary"></div>
 
-        <tbody id="reportTable"></tbody>
-    </table>
-
-    <!-- Pagination -->
-    <div class="text-center mt-3">
-        <button id="prevBtn" class="btn btn-primary">Previous</button>
-        <span id="pageNumber">1</span>
-        <button id="nextBtn" class="btn btn-primary">Next</button>
-    </div>
+<p>Loading Reports...</p>
 
 </div>
 
-<script src="js/api.js"></script>
-<script src="js/reports.js"></script>
+<table class="table table-bordered">
+
+<thead class="table-primary">
+
+<tr>
+
+<th>ID</th>
+
+<th>Title</th>
+
+<th>Description</th>
+
+<th>Status</th>
+
+</tr>
+
+</thead>
+
+<tbody id="reportTable">
+
+</tbody>
+
+</table>
+
+<div class="d-flex justify-content-between">
+
+<button id="prevBtn" class="btn btn-secondary">
+
+Previous
+
+</button>
+
+<span id="pageNumber">
+
+1
+
+</span>
+
+<button id="nextBtn" class="btn btn-secondary">
+
+Next
+
+</button>
+
+</div>
+
+</div>
+
+<script src="api.js"></script>
+
+<script src="reports.js"></script>
 
 </body>
+
 </html>

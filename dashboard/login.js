@@ -1,35 +1,31 @@
-const loginForm=document.getElementById("loginForm");
+const form = document.getElementById("loginForm");
 
-loginForm.addEventListener("submit",function(e){
+form.addEventListener("submit", function (e) {
 
-e.preventDefault();
+    e.preventDefault();
 
-const email=document.getElementById("email").value.trim();
+    const email = document.getElementById("email").value.trim();
+    const password = document.getElementById("password").value.trim();
+    const role = document.getElementById("role").value;
 
-const password=document.getElementById("password").value.trim();
+    if (email === "" || password === "") {
 
-const role=document.getElementById("role").value;
+        document.getElementById("error").innerHTML =
+            "Please fill all fields.";
 
-if(email===""||password===""){
+        return;
+    }
 
-document.getElementById("error").innerHTML="Please fill all fields.";
+    const user = {
 
-return;
+        email: email,
+        role: role,
+        isLoggedIn: true
 
-}
+    };
 
-const user={
+    localStorage.setItem("user", JSON.stringify(user));
 
-email,
-
-role,
-
-isLoggedIn:true
-
-};
-
-localStorage.setItem("user",JSON.stringify(user));
-
-window.location.href="index.html";
+    window.location.href = "index.html";
 
 });
