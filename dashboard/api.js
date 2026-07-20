@@ -2,7 +2,7 @@
 const USERS_API = "https://dummyjson.com/users";
 const REPORTS_API = "https://jsonplaceholder.typicode.com/posts";
 
-// Fetch Users
+
 async function fetchUsers() {
     try {
         const response = await fetch(USERS_API);
@@ -20,7 +20,6 @@ async function fetchUsers() {
     }
 }
 
-// Fetch Reports
 async function fetchReports() {
     try {
         const response = await fetch(REPORTS_API);

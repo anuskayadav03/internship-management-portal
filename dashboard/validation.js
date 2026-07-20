@@ -1,4 +1,3 @@
-// Form Validation
 
 function validateStudent(name, email, attendance, performance) {
 
@@ -35,7 +34,6 @@ function validateStudent(name, email, attendance, performance) {
     return true;
 }
 
-// Clear Form
 
 function clearForm() {
 
@@ -45,7 +43,6 @@ function clearForm() {
 
 }
 
-// Show Error
 
 function showError(message) {
 
@@ -55,7 +52,6 @@ function showError(message) {
 
 }
 
-// Show Success
 
 function showSuccess(message) {
 

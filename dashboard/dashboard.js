@@ -1,15 +1,11 @@
-// -------------------------
-// Login Check
-// -------------------------
+
 const user = JSON.parse(localStorage.getItem("user"));
 
 if (!user || !user.isLoggedIn) {
     window.location.href = "login.html";
 }
 
-// -------------------------
-// Welcome Details
-// -------------------------
+
 document.getElementById("welcomeText").textContent =
     "Welcome, " + user.role.toUpperCase();
 
@@ -19,17 +15,12 @@ document.getElementById("roleName").textContent =
 document.getElementById("emailText").textContent =
     "Email : " + user.email;
 
-// -------------------------
-// Logout
-// -------------------------
+
 function logout() {
     localStorage.removeItem("user");
     window.location.href = "login.html";
 }
 
-// -------------------------
-// Theme
-// -------------------------
 const themeBtn = document.getElementById("themeBtn");
 
 if (localStorage.getItem("theme") === "dark") {
@@ -48,16 +39,10 @@ themeBtn.addEventListener("click", function () {
 
 });
 
-// -------------------------
-// Dashboard Elements
-// -------------------------
 const loading = document.getElementById("loading");
 const dashboardCards = document.getElementById("dashboardCards");
 const error = document.getElementById("error");
 
-// -------------------------
-// Load Dashboard
-// -------------------------
 async function loadDashboard() {
 
     loading.classList.remove("d-none");
@@ -92,9 +77,6 @@ async function loadDashboard() {
 
 loadDashboard();
 
-// -------------------------
-// Chart
-// -------------------------
 function createChart(studentCount, reportCount) {
 
     const canvas = document.getElementById("dashboardChart");

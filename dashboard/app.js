@@ -1,4 +1,3 @@
-// Wait until page loads
 
 window.onload = function () {
 
@@ -9,8 +8,6 @@ window.onload = function () {
     }, 1000);
 
 };
-
-// Form Submit
 
 document.getElementById("studentForm").addEventListener("submit", function (e) {
 
@@ -53,8 +50,6 @@ document.getElementById("studentForm").addEventListener("submit", function (e) {
 
 });
 
-// Search Students
-
 document.getElementById("search").addEventListener("keyup", function () {
 
     const value = this.value.toLowerCase();
@@ -66,8 +61,6 @@ document.getElementById("search").addEventListener("keyup", function () {
     displayStudents(filtered);
 
 });
-
-// Filter by Status
 
 document.getElementById("filterStatus").addEventListener("change", function () {
 
@@ -85,8 +78,6 @@ document.getElementById("filterStatus").addEventListener("change", function () {
     displayStudents(filtered);
 
 });
-
-// Sort Students
 
 document.getElementById("sortBy").addEventListener("change", function () {
 
@@ -112,8 +103,6 @@ document.getElementById("sortBy").addEventListener("change", function () {
 
 });
 
-// Export JSON
-
 document.getElementById("exportBtn").addEventListener("click", function () {
 
     const data = JSON.stringify(students, null, 2);
@@ -132,7 +121,6 @@ document.getElementById("exportBtn").addEventListener("click", function () {
 
 });
 
-// Import JSON
 
 document.getElementById("importFile").addEventListener("change", function (e) {
 
