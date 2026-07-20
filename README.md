@@ -1,27 +1,32 @@
 # Internship Management Portal
 
-## Project Overview
-The Internship Management Portal is a simple multi-page HTML project created as part of the internship assignment. It helps manage student registration, attendance, task submission, performance reports, and contact information.
+## Features
 
-## Technologies Used
+- Login & Logout
+- Role Based Dashboard
+- Student CRUD
+- Dashboard Analytics
+- Pagination
+- Search
+- Filter
+- Export JSON
+- Import JSON
+- Toast Notifications
+- Loading Spinner
+- Responsive Design
 
-- HTML5
-- Git
-- GitHub
-- GitHub Pages
+## Bonus
 
+- Dark Theme
+- Chart.js Dashboard
+- Attendance Tracker
+- Performance Analytics
 
-## Git Commands Used
+## Technologies
 
-```bash
-git init
-git clone
-git status
-git add .
-git commit -m "message"
-git push origin main
-git pull origin main
-git checkout -b branch-name
-git checkout main
-git merge branch-name
-git branch
+- HTML
+- CSS
+- Bootstrap
+- Vanilla JavaScript
+- Local Storage
+- Chart.js

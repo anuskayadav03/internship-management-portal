@@ -1,89 +1,124 @@
+// Login Protection
+const user = JSON.parse(localStorage.getItem("user"));
+
+if (!user || !user.isLoggedIn) {
+    window.location.href = "login.html";
+}
+
+const loading = document.getElementById("loading");
+const reportTable = document.getElementById("reportTable");
+const searchInput = document.getElementById("searchReport");
+
 let reports = [];
-let filteredReports = [];
 let currentPage = 1;
 const reportsPerPage = 10;
 
-// Elements
-const reportTable = document.getElementById("reportTable");
-const searchReport = document.getElementById("searchReport");
-const loading = document.getElementById("loading");
-const pageNumber = document.getElementById("pageNumber");
-
 // Load Reports
 async function loadReports() {
-    try {
-        reports = await fetchReports();
-        filteredReports = reports;
 
-        displayReports();
+    loading.style.display = "block";
 
-    } catch (error) {
-        reportTable.innerHTML =
-            "<tr><td colspan='4' class='text-center text-danger'>Failed to load reports.</td></tr>";
-    } finally {
-        loading.style.display = "none";
-    }
+    reports = await fetchReports();
+
+    loading.style.display = "none";
+
+    renderReports();
+
 }
 
-// Display Reports
-function displayReports() {
+loadReports();
+
+// Render Reports
+function renderReports() {
+
     reportTable.innerHTML = "";
 
-    const start = (currentPage - 1) * reportsPerPage;
-    const end = start + reportsPerPage;
+    let keyword = searchInput.value.toLowerCase();
 
-    const pageData = filteredReports.slice(start, end);
+    let filtered = reports.filter(report =>
+        report.title.toLowerCase().includes(keyword) ||
+        report.body.toLowerCase().includes(keyword)
+    );
 
-    pageData.forEach(report => {
+    let start = (currentPage - 1) * reportsPerPage;
+    let end = start + reportsPerPage;
 
-        const status = report.id % 2 === 0 ? "Completed" : "Pending";
+    filtered.slice(start, end).forEach(report => {
 
         reportTable.innerHTML += `
         <tr>
+
             <td>${report.id}</td>
+
             <td>${report.title}</td>
-            <td>${report.body}</td>
-            <td>${status}</td>
+
+            <td>${report.body.substring(0,50)}...</td>
+
+            <td>
+
+                <span class="badge bg-success">
+
+                    Completed
+
+                </span>
+
+            </td>
+
         </tr>
         `;
+
     });
 
-    pageNumber.textContent = currentPage;
+    document.getElementById("pageNumber").innerHTML = currentPage;
+
 }
 
 // Search
-searchReport.addEventListener("input", () => {
-
-    const keyword = searchReport.value.toLowerCase();
-
-    filteredReports = reports.filter(report =>
-        report.title.toLowerCase().includes(keyword)
-    );
+searchInput.addEventListener("keyup", () => {
 
     currentPage = 1;
-    displayReports();
+
+    renderReports();
 
 });
 
-// Next Page
-document.getElementById("nextBtn").addEventListener("click", () => {
-
-    if (currentPage * reportsPerPage < filteredReports.length) {
-        currentPage++;
-        displayReports();
-    }
-
-});
-
-// Previous Page
+// Pagination
 document.getElementById("prevBtn").addEventListener("click", () => {
 
     if (currentPage > 1) {
+
         currentPage--;
-        displayReports();
+
+        renderReports();
+
     }
 
 });
 
-// Start
-loadReports();
+document.getElementById("nextBtn").addEventListener("click", () => {
+
+    let keyword = searchInput.value.toLowerCase();
+
+    let filtered = reports.filter(report =>
+        report.title.toLowerCase().includes(keyword) ||
+        report.body.toLowerCase().includes(keyword)
+    );
+
+    if (currentPage < Math.ceil(filtered.length / reportsPerPage)) {
+
+        currentPage++;
+
+        renderReports();
+
+    }
+
+});
+
+// Logout
+function logout() {
+
+    localStorage.removeItem("user");
+
+    window.location.href = "login.html";
+
+}

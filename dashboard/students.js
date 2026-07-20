@@ -1,114 +1,357 @@
-let students = [];
-let filteredStudents = [];
+let students = JSON.parse(localStorage.getItem("students")) || [];
+
+let editIndex = -1;
 let currentPage = 1;
-const studentsPerPage = 10;
+const perPage = 5;
 
-// HTML Elements
-const studentContainer = document.getElementById("studentContainer");
-const searchInput = document.getElementById("searchInput");
-const filterCompany = document.getElementById("filterCompany");
+const tbody = document.getElementById("studentBody");
+const table = document.getElementById("studentTable");
 const loading = document.getElementById("loading");
-const pageNumber = document.getElementById("pageNumber");
+const toast = document.getElementById("toast");
 
-// Load Students
-async function loadStudents() {
-    try {
-        students = await fetchUsers();
-        filteredStudents = students;
+// Default Data
+if (students.length === 0) {
 
-        populateCompanies();
-        displayStudents();
-    } catch (error) {
-        studentContainer.innerHTML =
-            "<h3 class='text-danger text-center'>Failed to load students.</h3>";
-    } finally {
-        loading.style.display = "none";
-    }
+students = [
+
+{
+id:1,
+name:"Rahul Sharma",
+email:"rahul@gmail.com",
+status:"active"
+},
+
+{
+id:2,
+name:"Priya Singh",
+email:"priya@gmail.com",
+status:"active"
+},
+
+{
+id:3,
+name:"Aman Verma",
+email:"aman@gmail.com",
+status:"inactive"
+},
+
+{
+id:4,
+name:"Sneha Patel",
+email:"sneha@gmail.com",
+status:"active"
+},
+
+{
+id:5,
+name:"Rohit Kumar",
+email:"rohit@gmail.com",
+status:"inactive"
+},
+
+{
+id:6,
+name:"Anjali Gupta",
+email:"anjali@gmail.com",
+status:"active"
 }
 
-// Display Students
-function displayStudents() {
-    studentContainer.innerHTML = "";
+];
 
-    const start = (currentPage - 1) * studentsPerPage;
-    const end = start + studentsPerPage;
+saveStorage();
 
-    const pageStudents = filteredStudents.slice(start, end);
-
-    pageStudents.forEach(student => {
-        studentContainer.innerHTML += `
-        <div class="col-md-4">
-            <div class="card shadow h-100 student-card">
-                <div class="card-body text-center">
-                    <img src="${student.image}" class="img-fluid rounded-circle mb-3" width="120">
-                    <h5>${student.firstName} ${student.lastName}</h5>
-                    <p>${student.email}</p>
-                    <p>${student.phone}</p>
-                    <p><strong>${student.company.name}</strong></p>
-                </div>
-            </div>
-        </div>
-        `;
-    });
-
-    pageNumber.textContent = currentPage;
 }
 
-// Company Filter
-function populateCompanies() {
-    const companies = [...new Set(students.map(student => student.company.name))];
+function saveStorage(){
 
-    companies.forEach(company => {
-        filterCompany.innerHTML += `
-            <option value="${company}">${company}</option>
-        `;
-    });
+localStorage.setItem("students",JSON.stringify(students));
+
 }
 
-// Search
-searchInput.addEventListener("input", () => {
-    const keyword = searchInput.value.toLowerCase();
+function showToast(message){
 
-    filteredStudents = students.filter(student =>
-        (`${student.firstName} ${student.lastName}`)
-        .toLowerCase()
-        .includes(keyword)
-    );
+toast.innerHTML=message;
 
-    currentPage = 1;
-    displayStudents();
+toast.classList.remove("d-none");
+
+setTimeout(()=>{
+
+toast.classList.add("d-none");
+
+},2000);
+
+}
+
+function renderStudents(){
+
+loading.classList.remove("d-none");
+
+table.classList.add("d-none");
+
+setTimeout(()=>{
+
+loading.classList.add("d-none");
+
+table.classList.remove("d-none");
+
+tbody.innerHTML="";
+
+let keyword=document.getElementById("searchInput").value.toLowerCase();
+
+let status=document.getElementById("filterStatus").value;
+
+let filtered=students.filter(student=>{
+
+let searchMatch=student.name.toLowerCase().includes(keyword)||student.email.toLowerCase().includes(keyword);
+
+let statusMatch=status==="all"||student.status===status;
+
+return searchMatch&&statusMatch;
+
 });
 
-// Filter
-filterCompany.addEventListener("change", () => {
-    const company = filterCompany.value;
+let start=(currentPage-1)*perPage;
 
-    if (company === "") {
-        filteredStudents = students;
-    } else {
-        filteredStudents = students.filter(student =>
-            student.company.name === company
-        );
-    }
+let end=start+perPage;
 
-    currentPage = 1;
-    displayStudents();
+filtered.slice(start,end).forEach((student,index)=>{
+
+tbody.innerHTML+=`
+
+<tr>
+
+<td>${student.id}</td>
+
+<td>${student.name}</td>
+
+<td>${student.email}</td>
+
+<td>${student.status}</td>
+
+<td>
+
+<button class="btn btn-warning btn-sm" onclick="editStudent(${students.indexOf(student)})">
+
+Edit
+
+</button>
+
+<button class="btn btn-danger btn-sm" onclick="deleteStudent(${students.indexOf(student)})">
+
+Delete
+
+</button>
+
+</td>
+
+</tr>
+
+`;
+
 });
 
-// Pagination
-document.getElementById("nextBtn").addEventListener("click", () => {
-    if ((currentPage * studentsPerPage) < filteredStudents.length) {
-        currentPage++;
-        displayStudents();
-    }
+document.getElementById("pageNumber").innerHTML=currentPage;
+
+},600);
+
+}
+
+renderStudents();
+
+function saveStudent(){
+
+const name=document.getElementById("studentName").value.trim();
+
+const email=document.getElementById("studentEmail").value.trim();
+
+const status=document.getElementById("studentStatus").value;
+
+if(name===""||email===""){
+
+alert("Please fill all fields.");
+
+return;
+
+}
+
+if(editIndex==-1){
+
+students.push({
+
+id:students.length+1,
+
+name,
+
+email,
+
+status
+
 });
 
-document.getElementById("prevBtn").addEventListener("click", () => {
-    if (currentPage > 1) {
-        currentPage--;
-        displayStudents();
-    }
+showToast("Student Added");
+
+}else{
+
+students[editIndex]={
+
+id:students[editIndex].id,
+
+name,
+
+email,
+
+status
+
+};
+
+showToast("Student Updated");
+
+editIndex=-1;
+
+}
+
+saveStorage();
+
+renderStudents();
+
+document.getElementById("studentName").value="";
+
+document.getElementById("studentEmail").value="";
+
+}
+
+function editStudent(index){
+
+editIndex=index;
+
+document.getElementById("studentName").value=students[index].name;
+
+document.getElementById("studentEmail").value=students[index].email;
+
+document.getElementById("studentStatus").value=students[index].status;
+
+new bootstrap.Modal(document.getElementById("studentModal")).show();
+
+}
+
+function deleteStudent(index){
+
+if(confirm("Delete this student?")){
+
+students.splice(index,1);
+
+saveStorage();
+
+renderStudents();
+
+showToast("Student Deleted");
+
+}
+
+}
+
+document.getElementById("searchInput").addEventListener("keyup",()=>{
+
+currentPage=1;
+
+renderStudents();
+
 });
 
-// Start
-loadStudents();
+document.getElementById("filterStatus").addEventListener("change",()=>{
+
+currentPage=1;
+
+renderStudents();
+
+});
+
+document.getElementById("prevBtn").addEventListener("click",()=>{
+
+if(currentPage>1){
+
+currentPage--;
+
+renderStudents();
+
+}
+
+});
+
+document.getElementById("nextBtn").addEventListener("click",()=>{
+
+let filtered=students.filter(student=>{
+
+let keyword=document.getElementById("searchInput").value.toLowerCase();
+
+let status=document.getElementById("filterStatus").value;
+
+let searchMatch=student.name.toLowerCase().includes(keyword)||student.email.toLowerCase().includes(keyword);
+
+let statusMatch=status==="all"||student.status===status;
+
+return searchMatch&&statusMatch;
+
+});
+
+if(currentPage<Math.ceil(filtered.length/perPage)){
+
+currentPage++;
+
+renderStudents();
+
+}
+
+});
+
+function exportStudents(){
+
+const dataStr=JSON.stringify(students,null,2);
+
+const blob=new Blob([dataStr],{type:"application/json"});
+
+const url=URL.createObjectURL(blob);
+
+const a=document.createElement("a");
+
+a.href=url;
+
+a.download="students.json";
+
+a.click();
+
+URL.revokeObjectURL(url);
+
+}
+
+document.getElementById("importFile").addEventListener("change",function(){
+
+const file=this.files[0];
+
+if(!file)return;
+
+const reader=new FileReader();
+
+reader.onload=function(e){
+
+students=JSON.parse(e.target.result);
+
+saveStorage();
+
+renderStudents();
+
+showToast("Students Imported");
+
+}
+
+reader.readAsText(file);
+
+});
+
+function logout(){
+
+localStorage.removeItem("user");
+
+window.location.href="login.html";
+
+}

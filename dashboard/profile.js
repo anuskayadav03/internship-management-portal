@@ -1,54 +1,90 @@
+// Login Protection
+const user = JSON.parse(localStorage.getItem("user"));
+
+if (!user || !user.isLoggedIn) {
+    window.location.href = "login.html";
+}
+
 const loading = document.getElementById("loading");
 const profileCard = document.getElementById("profileCard");
 
-async function loadProfile() {
+// Load Profile
+function loadProfile() {
 
-    try {
+    loading.classList.remove("d-none");
 
-        const users = await fetchUsers();
+    setTimeout(() => {
 
-        // Display the first user
-        const user = users[0];
+        loading.classList.add("d-none");
+
+        profileCard.classList.remove("d-none");
 
         profileCard.innerHTML = `
-            <div class="col-md-6">
-                <div class="card shadow text-center p-4">
 
-                    <img src="${user.image}"
-                         class="rounded-circle mx-auto"
-                         width="150">
+        <div class="col-md-6">
 
-                    <h3 class="mt-3">
-                        ${user.firstName} ${user.lastName}
-                    </h3>
+            <div class="card shadow">
+
+                <div class="card-body text-center">
+
+                    <img
+                        src="https://ui-avatars.com/api/?name=${encodeURIComponent(user.email)}&size=150"
+                        class="rounded-circle mb-3">
+
+                    <h3>User Profile</h3>
+
+                    <hr>
 
                     <p><strong>Email:</strong> ${user.email}</p>
 
-                    <p><strong>Phone:</strong> ${user.phone}</p>
+                    <p><strong>Role:</strong> ${user.role.toUpperCase()}</p>
 
-                    <p><strong>Company:</strong> ${user.company.name}</p>
+                    <button
+                        class="btn btn-primary"
+                        onclick="editProfile()">
 
-                    <p><strong>Department:</strong> ${user.company.department}</p>
+                        Edit Profile
 
-                    <p><strong>Address:</strong>
-                        ${user.address.address},
-                        ${user.address.city}
-                    </p>
+                    </button>
 
                 </div>
+
             </div>
+
+        </div>
+
         `;
 
-        loading.classList.add("d-none");
-        profileCard.classList.remove("d-none");
+    },1000);
 
-    } catch (error) {
+}
 
-        loading.innerHTML =
-            "<h4 class='text-danger'>Failed to load profile.</h4>";
+loadProfile();
+
+// Edit Profile
+function editProfile(){
+
+    const newEmail = prompt("Enter New Email", user.email);
+
+    if(newEmail && newEmail.trim() !== ""){
+
+        user.email = newEmail.trim();
+
+        localStorage.setItem("user", JSON.stringify(user));
+
+        loadProfile();
+
+        alert("Profile Updated Successfully!");
 
     }
 
 }
 
-loadProfile();
+// Logout
+function logout(){
+
+    localStorage.removeItem("user");
+
+    window.location.href = "login.html";
+
+}
