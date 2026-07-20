@@ -27,5 +27,11 @@ async function loadDashboard() {
     }
 }
 
-// Load Dashboard when page opens
 loadDashboard();
+function logout() {
+
+localStorage.removeItem("user");
+
+window.location.href = "login.html";
+
+}
